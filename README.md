@@ -1,4 +1,4 @@
-# 3SC iOS Technical Task – PokeApp
+# iOS Technical Task – PokeApp
 
 This is an iOS application built using **Swift** and **SwiftUI** for the iOS recruitment task. It fetches data from the [PokéAPI](https://pokeapi.co) and allows users to:
 

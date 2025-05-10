@@ -8,6 +8,7 @@
 import Foundation
 
 class PokemonListViewModel: ObservableObject {
+    
     @Published var pokemons: [JSON] = []
     @Published var searchText: String = ""
 
@@ -19,7 +20,7 @@ class PokemonListViewModel: ObservableObject {
     var filteredPokemons: [JSON] {
         if searchText.isEmpty { return pokemons }
         return pokemons.filter {
-            $0["name"].string?.lowercased().contains(searchText.lowercased()) ?? false
+            $0.name.string?.lowercased().contains(searchText.lowercased()) ?? false
         }
     }
 
@@ -48,7 +49,7 @@ class PokemonListViewModel: ObservableObject {
         NetworkCall.shared.fetchPokemonList(offset: offset, limit: limit) { response in
             DispatchQueue.main.async {
                 if let data = response, let json = try? JSON(data: data) {
-                    let results = json["results"].array ?? []
+                    let results = json.results.array ?? []
                     if results.isEmpty { self.canLoadMore = false }
                     self.pokemons.append(contentsOf: results)
                     self.offset += self.limit

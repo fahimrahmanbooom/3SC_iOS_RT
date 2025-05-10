@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FF7FB2CE2DCED91B00D30DF5 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FF7FB2CD2DCED91B00D30DF5 /* CachedAsyncImage */; };
+		FF9AF4AC2DCEBC27008AFA64 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF9AF4AB2DCEBC27008AFA64 /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FF9AF47D2DCEB56D008AFA64 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF9AF4AC2DCEBC27008AFA64 /* Alamofire in Frameworks */,
+				FF7FB2CE2DCED91B00D30DF5 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +119,8 @@
 			);
 			name = PokeApp;
 			packageProductDependencies = (
+				FF9AF4AB2DCEBC27008AFA64 /* Alamofire */,
+				FF7FB2CD2DCED91B00D30DF5 /* CachedAsyncImage */,
 			);
 			productName = PokeApp;
 			productReference = FF9AF46E2DCEB56A008AFA64 /* PokeApp.app */;
@@ -195,6 +204,10 @@
 			);
 			mainGroup = FF9AF4652DCEB56A008AFA64;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FF9AF4AA2DCEBC27008AFA64 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FF7FB2CC2DCED91B00D30DF5 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FF9AF46F2DCEB56A008AFA64 /* Products */;
 			projectDirPath = "";
@@ -397,6 +410,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = PokeApp;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -436,6 +450,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = PokeApp;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -593,6 +608,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FF7FB2CC2DCED91B00D30DF5 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jakirseu/CachedAsyncImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+		FF9AF4AA2DCEBC27008AFA64 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FF7FB2CD2DCED91B00D30DF5 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF7FB2CC2DCED91B00D30DF5 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */;
+			productName = CachedAsyncImage;
+		};
+		FF9AF4AB2DCEBC27008AFA64 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF9AF4AA2DCEBC27008AFA64 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FF9AF4662DCEB56A008AFA64 /* Project object */;
 }

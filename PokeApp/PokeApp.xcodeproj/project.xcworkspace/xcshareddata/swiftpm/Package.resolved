@@ -1,0 +1,24 @@
+{
+  "originHash" : "1895185c63411db90711e17b59ff3187085c4a6289a9d461c37afe504afe6f79",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "cachedasyncimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jakirseu/CachedAsyncImage",
+      "state" : {
+        "revision" : "77b32450fdb8eaa868cbc13eb6bbc81ea7b46cd0",
+        "version" : "1.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}

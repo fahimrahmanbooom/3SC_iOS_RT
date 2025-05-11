@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FF7FB2CE2DCED91B00D30DF5 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FF7FB2CD2DCED91B00D30DF5 /* CachedAsyncImage */; };
+		FF8C195A2DCFF93B005B5F98 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FF8C19592DCFF93B005B5F98 /* CachedAsyncImage */; };
 		FF9AF4AC2DCEBC27008AFA64 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF9AF4AB2DCEBC27008AFA64 /* Alamofire */; };
 /* End PBXBuildFile section */
 
@@ -58,7 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF9AF4AC2DCEBC27008AFA64 /* Alamofire in Frameworks */,
-				FF7FB2CE2DCED91B00D30DF5 /* CachedAsyncImage in Frameworks */,
+				FF8C195A2DCFF93B005B5F98 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +120,7 @@
 			name = PokeApp;
 			packageProductDependencies = (
 				FF9AF4AB2DCEBC27008AFA64 /* Alamofire */,
-				FF7FB2CD2DCED91B00D30DF5 /* CachedAsyncImage */,
+				FF8C19592DCFF93B005B5F98 /* CachedAsyncImage */,
 			);
 			productName = PokeApp;
 			productReference = FF9AF46E2DCEB56A008AFA64 /* PokeApp.app */;
@@ -206,7 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FF9AF4AA2DCEBC27008AFA64 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				FF7FB2CC2DCED91B00D30DF5 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */,
+				FF8C19582DCFF93B005B5F98 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FF9AF46F2DCEB56A008AFA64 /* Products */;
@@ -610,12 +610,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FF7FB2CC2DCED91B00D30DF5 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */ = {
+		FF8C19582DCFF93B005B5F98 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jakirseu/CachedAsyncImage";
+			repositoryURL = "https://github.com/bullinnyc/CachedAsyncImage";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.2;
+				minimumVersion = 2.6.0;
 			};
 		};
 		FF9AF4AA2DCEBC27008AFA64 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
@@ -629,9 +629,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FF7FB2CD2DCED91B00D30DF5 /* CachedAsyncImage */ = {
+		FF8C19592DCFF93B005B5F98 /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF7FB2CC2DCED91B00D30DF5 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */;
+			package = FF8C19582DCFF93B005B5F98 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */;
 			productName = CachedAsyncImage;
 		};
 		FF9AF4AB2DCEBC27008AFA64 /* Alamofire */ = {

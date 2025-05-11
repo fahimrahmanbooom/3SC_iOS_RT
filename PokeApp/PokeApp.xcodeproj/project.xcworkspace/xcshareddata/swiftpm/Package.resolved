@@ -1,5 +1,5 @@
 {
-  "originHash" : "1895185c63411db90711e17b59ff3187085c4a6289a9d461c37afe504afe6f79",
+  "originHash" : "8644992f6b0e9565907f1d8f9508e78ffaae89bc1402346b6c643e13d2c69038",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -13,10 +13,10 @@
     {
       "identity" : "cachedasyncimage",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jakirseu/CachedAsyncImage",
+      "location" : "https://github.com/bullinnyc/CachedAsyncImage",
       "state" : {
-        "revision" : "77b32450fdb8eaa868cbc13eb6bbc81ea7b46cd0",
-        "version" : "1.0.2"
+        "revision" : "cb253e111528c082381af54b67dab7a15eefde16",
+        "version" : "2.6.0"
       }
     }
   ],

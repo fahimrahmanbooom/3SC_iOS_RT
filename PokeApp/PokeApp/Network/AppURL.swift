@@ -26,7 +26,7 @@ final class AppURL {
     }
     
     // pokemon image URL
-    func pokemonImageURL(pokemonID: Int) -> URL? {
-        return URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokemonID).png")
+    func pokemonImageURL(pokemonID: Int) -> String? {
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(pokemonID).png"
     }
 }

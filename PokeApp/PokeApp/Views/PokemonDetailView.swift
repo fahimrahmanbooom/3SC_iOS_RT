@@ -6,39 +6,57 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct PokemonDetailView: View {
+    
     let detailURL: String
+    
     @State private var detailsData: JSON = JSON()
-//    @State private var types: [String] = []
-//    @State private var abilities: [String] = []
 
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    // Image
-                    if let spriteURL = self.detailsData.sprites.front_default.string,
-                       let url = URL(string: spriteURL) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
+                    CachedAsyncImage(
+                        url: self.detailsData.sprites.front_default.string ?? "",
+                        placeholder: { _ in
+                            ProgressView()
+                                .frame(width: 150, height: 150)
+                        },
+                        image: {
+                            Image(uiImage: $0)
+                                .resizable()
+                                .interpolation(.none)
                                 .scaledToFit()
                                 .frame(width: 150, height: 150)
-                        } placeholder: {
-                            ProgressView()
+                                .scaleEffect(1.5)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.yellow.opacity(0.5), lineWidth: 1))
                         }
-                    }
+                    )
 
-//                    // Name
-                    Text(self.detailsData.name.string?.capitalized ?? "Loading...")
-                        .font(.largeTitle).bold()
+                    
+                    // Image
+//                    if let spriteURL = self.detailsData.sprites.front_default.string,
+//                       let url = URL(string: spriteURL) {
+//                        CachedAsyncImage(url: url)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 150, height: 150)
+//                            .clipShape(Circle())
+//                            .padding(8)
+//                            .overlay(Circle().stroke(Color.gray, lineWidth: 1, antialiased: true))
+//                            .padding(.trailing)
+//                    }
+
 
 //                    // Info box
                     VStack(alignment: .leading, spacing: 8) {
                         InfoRow(title: "Height", value: "\(Double(detailsData.height.int ?? 0) / 10) m")
                         InfoRow(title: "Weight", value: "\(Double(detailsData.weight.int ?? 0) / 10) kg")
-                        //InfoRow(title: "Abilities", value: abilities.joined(separator: ", ").capitalized)
+                        InfoRow(title: "Abilities", value: detailsData.abilities.array?.compactMap { $0.ability.name.string?.capitalized }.joined(separator: ", ") ?? "")
                     }
                     .padding()
                     .background(Color.blue.opacity(0.1))
@@ -81,12 +99,15 @@ struct PokemonDetailView: View {
         }
     }
 
+    @MainActor
     func loadData() async {
         NetworkCall.shared.fetchPokemonDetails(from: detailURL) { response in
             if let data = response {
-                self.detailsData = try! JSON(data: data)
-//                self.types = self.detailsData.types.arrayValue.map { $0.type.name.string ?? "Unknown" }
-//                self.abilities = self.detailsData.abilities.arrayValue.map { $0.ability.name.string ?? "Unknown" }
+                do {
+                    self.detailsData = try JSON(data: data)
+                } catch {
+                    print("Failed to parse JSON: \(error)")
+                }
             }
         }
     }

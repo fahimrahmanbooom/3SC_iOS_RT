@@ -6,22 +6,35 @@
 //
 
 import Foundation
+import Combine
 
 class PokemonListViewModel: ObservableObject {
     
     @Published var pokemons: [JSON] = []
     @Published var searchText: String = ""
-
+    @Published var filteredPokemons: [JSON] = []
+    
+    private var cancellables = Set<AnyCancellable>()
     private var offset = 0
     private let limit = 20
     private var isLoading = false
     private var canLoadMore = true
 
-    var filteredPokemons: [JSON] {
-        if searchText.isEmpty { return pokemons }
-        return pokemons.filter {
-            $0.name.string?.lowercased().contains(searchText.lowercased()) ?? false
-        }
+    init() {
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] search in
+                guard let self = self else { return }
+                if search.isEmpty {
+                    self.filteredPokemons = self.pokemons
+                } else {
+                    self.filteredPokemons = self.pokemons.filter {
+                        $0.name.string?.lowercased().contains(search.lowercased()) ?? false
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func loadInitial() async {
@@ -53,6 +66,11 @@ class PokemonListViewModel: ObservableObject {
                     if results.isEmpty { self.canLoadMore = false }
                     self.pokemons.append(contentsOf: results)
                     self.offset += self.limit
+                    self.filteredPokemons = self.searchText.isEmpty
+                        ? self.pokemons
+                        : self.pokemons.filter {
+                            $0.name.string?.lowercased().contains(self.searchText.lowercased()) ?? false
+                        }
                 }
                 self.isLoading = false
             }

@@ -1,6 +1,6 @@
-# 3SC iOS Technical Task – PokeApp
+# iOS Technical Task – PokeApp
 
-This is an iOS application built using **Swift** and **SwiftUI** for the iOS recruitment task. It fetches data from the [PokéAPI](https://pokeapi.co) and allows users to:
+This iOS application is built using **Swift** and **SwiftUI** for the iOS recruitment task. It fetches data from the [PokéAPI](https://pokeapi.co) and allows users to:
 
 * Browse a searchable list of Pokémon
 * View detailed statistics and images for each Pokémon
@@ -24,16 +24,7 @@ This is an iOS application built using **Swift** and **SwiftUI** for the iOS rec
 
 * Swift 5+
 * SwiftUI
-* [Alamofire](https://github.com/Alamofire/Alamofire)
 
-## Project Structure
-
-```
-├── Models
-├── Views
-├── ViewModels
-├── Networking
-├── Resources
-```
+## Must run on Real device for the best result.
 
 - Fahim Rahman

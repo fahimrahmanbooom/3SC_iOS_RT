@@ -37,7 +37,7 @@ struct PokemonDetailView: View {
                         
                         CachedAsyncImage(url: url, placeholder: { _ in
                                 ProgressView()
-                                    .frame(width: 150, height: 150)
+                                .frame(width: UIDevice.isiPhone ? 150 : 200, height: UIDevice.isiPhone ? 150 : 200)
                             },
                             image: {
                                 Image(uiImage: $0)
@@ -45,7 +45,7 @@ struct PokemonDetailView: View {
                                     .scaledToFit()
                                     .background(Color.blue.opacity(0.2))
                                     .clipShape(Circle())
-                                    .frame(width: 120, height: 120)
+                                    .frame(width: UIDevice.isiPhone ? 120 : 150, height: UIDevice.isiPhone ? 120 : 150)
                                     .padding(15)
                                     .overlay(Circle().stroke(Color.blue.opacity(0.6), lineWidth: 1))
                                     .padding(.bottom, 30)
@@ -54,7 +54,7 @@ struct PokemonDetailView: View {
                     }
 
                     // MARK: - info
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: UIDevice.isiPhone ? 8 : 12) {
                         
                         HStack {
                             Image(systemName: "ruler")
@@ -224,6 +224,7 @@ struct PokemonDetailView: View {
                             .padding(.top, 8)
                         }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.blue.opacity(0.3))
                     .cornerRadius(12)

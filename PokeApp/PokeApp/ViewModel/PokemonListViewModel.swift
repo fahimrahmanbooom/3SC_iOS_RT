@@ -36,11 +36,9 @@ final class PokemonListViewModel: ObservableObject {
 
     // MARK: - Search Filtering
     private func applySearchFilter() {
-        filteredPokemons = searchText.isEmpty
-            ? pokemons
-            : pokemons.filter {
-                $0.name.string?.lowercased().contains(searchText.lowercased()) ?? false
-            }
+        filteredPokemons = searchText.isEmpty ? pokemons : pokemons.filter {
+            $0.name.string?.lowercased().contains(searchText.lowercased()) ?? false
+        }
     }
 
     // MARK: - Initial Load
@@ -106,36 +104,6 @@ final class PokemonListViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Load Evolution Chain
-//    func loadEvolutionChain(for pokemonID: Int) async {
-//        guard let speciesURL = AppURL.shared.pokemonSpeciesURL(pokemonID: pokemonID),
-//              let speciesData = await NetworkCall.shared.fetchPokemonDetails(from: speciesURL),
-//              let speciesJSON = try? JSON(data: speciesData),
-//              let evoURL = speciesJSON["evolution_chain"]["url"].string,
-//              let evoData = await NetworkCall.shared.fetchPokemonDetails(from: evoURL),
-//              let evoJSON = try? JSON(data: evoData) else {
-//            print("❌ Failed to load evolution chain")
-//            return
-//        }
-//
-//        var chain: [JSON] = []
-//        var current = evoJSON["chain"]
-//
-//        while true {
-//            if let species = current["species"].dictionary {
-//                chain.append(JSON(species))
-//            }
-//
-//            if let evolvesTo = current["evolves_to"].array, !evolvesTo.isEmpty {
-//                current = evolvesTo[0]
-//            } else {
-//                break
-//            }
-//        }
-//
-//        self.evolutionChain = chain
-//    }
-    
     @MainActor
     func loadEvolutionChain(for pokemonID: Int) async {
         guard let speciesURL = AppURL.shared.pokemonSpeciesURL(pokemonID: pokemonID) else {

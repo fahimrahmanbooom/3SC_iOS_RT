@@ -6,46 +6,71 @@
 //
 
 import Foundation
-import Alamofire
 
+@MainActor
 final class NetworkCall {
 
     static let shared = NetworkCall()
     private init() { }
 
-    private let headers: HTTPHeaders = [
-        "Content-Type": "application/json"
-    ]
-
-    // MARK: - fetch Pokemon List
-    func fetchPokemonList(offset: Int = 0, limit: Int = 20, completion: @escaping (Data?) -> Void) {
-        guard let url = AppURL.shared.pokemonListURL(offset: offset, limit: limit)?.absoluteString else {
+    // MARK: - fetch pokemon list
+    func fetchPokemonList(offset: Int = 0, limit: Int = 25) async -> Data? {
+        guard let url = AppURL.shared.pokemonListURL(offset: offset, limit: limit) else {
             print("❌ Invalid Pokemon list URL")
-            completion(nil)
-            return
+            return nil
         }
 
-        NetworkManager.shared.requestRaw(url: url, method: .get, headers: headers) { result in
-            switch result {
-            case .success(let data):
-                completion(data)
-            case .failure(let error):
-                print("❌ Failed to fetch Pokemon list:", error.localizedDescription)
-                completion(nil)
-            }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return data
+        } catch {
+            print("❌ Failed to fetch Pokemon list:", error.localizedDescription)
+            return nil
         }
     }
 
-    // MARK: - fetch Pokemon Details
-    func fetchPokemonDetails(from detailURL: String, completion: @escaping (Data?) -> Void) {
-        NetworkManager.shared.requestRaw(url: detailURL, method: .get, headers: headers) { result in
-            switch result {
-            case .success(let data):
-                completion(data)
-            case .failure(let error):
-                print("❌ Failed to fetch Pokemon details:", error.localizedDescription)
-                completion(nil)
+    // MARK: - fetch pokemon details
+    func fetchPokemonDetails(from detailURL: String) async -> Data? {
+        guard let url = URL(string: detailURL) else {
+            print("❌ Invalid detail URL")
+            return nil
+        }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return data
+        } catch {
+            print("❌ Failed to fetch Pokemon details:", error.localizedDescription)
+            return nil
+        }
+    }
+
+    // MARK: - fetch volution chain data
+    func fetchEvolutionChainData(pokemonID: Int) async -> Data? {
+        guard let speciesURL = AppURL.shared.pokemonSpeciesURL(pokemonID: pokemonID) else {
+            print("❌ Invalid species URL")
+            return nil
+        }
+
+        do {
+            let (speciesData, _) = try await URLSession.shared.data(from: speciesURL)
+
+            guard
+                let json = try JSONSerialization.jsonObject(with: speciesData) as? [String: Any],
+                let evoInfo = json["evolution_chain"] as? [String: Any],
+                let evoURLString = evoInfo["url"] as? String,
+                let evoURL = URL(string: evoURLString)
+            else {
+                print("❌ Could not parse evolution_chain URL from species data")
+                return nil
             }
+
+            let (evoData, _) = try await URLSession.shared.data(from: evoURL)
+            return evoData
+
+        } catch {
+            print("❌ Error fetching evolution chain:", error.localizedDescription)
+            return nil
         }
     }
 }

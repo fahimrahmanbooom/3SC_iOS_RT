@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StatView: View {
+    
     var label: String
     var value: Int
 

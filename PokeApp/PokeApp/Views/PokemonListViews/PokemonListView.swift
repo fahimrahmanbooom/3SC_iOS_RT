@@ -51,10 +51,8 @@ struct PokemonListView: View {
                             
                             Spacer()
                         }
-                        .onAppear {
-                            Task {
-                                await self.viewModel.loadMoreIfNeeded(currentItem: pokemon)
-                            }
+                        .task {
+                            await self.viewModel.loadMoreIfNeeded(currentItem: pokemon)
                         }
                     }
                 }

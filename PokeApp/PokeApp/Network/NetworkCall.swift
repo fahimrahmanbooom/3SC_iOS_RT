@@ -9,67 +9,79 @@ import Foundation
 
 @MainActor
 final class NetworkCall {
-
     static let shared = NetworkCall()
-    private init() { }
+    private init() {}
 
-    // MARK: - fetch pokemon list
-    func fetchPokemonList(offset: Int = 0, limit: Int = 25) async -> Data? {
-        guard let url = AppURL.shared.pokemonListURL(offset: offset, limit: limit) else {
-            print("❌ Invalid Pokemon list URL")
+    // Fetch Pokémon list with pagination
+    func fetchPokemonList(offset: Int, limit: Int) async -> Data? {
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?offset=\(offset)&limit=\(limit)") else {
+            print("❌ Invalid Pokémon list URL")
             return nil
         }
 
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("❌ No HTTP response")
+                return nil
+            }
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print("❌ HTTP Status Code: \(httpResponse.statusCode)")
+                return nil
+            }
+
+            guard httpResponse.mimeType == "application/json" else {
+                let raw = String(data: data, encoding: .utf8) ?? "Unreadable response"
+                print("❌ Unexpected MIME type: \(httpResponse.mimeType ?? "nil")")
+                print("❌ Raw response: \(raw)")
+                return nil
+            }
+
             return data
         } catch {
-            print("❌ Failed to fetch Pokemon list:", error.localizedDescription)
+            print("❌ Network error: \(error.localizedDescription)")
             return nil
         }
     }
 
-    // MARK: - fetch pokemon details
-    func fetchPokemonDetails(from detailURL: String) async -> Data? {
-        guard let url = URL(string: detailURL) else {
+    // Generic fetch for Pokémon detail or species or evolution
+    func fetchPokemonDetails(from url: String) async -> Data? {
+        guard let url = URL(string: url) else {
             print("❌ Invalid detail URL")
             return nil
         }
 
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return data
-        } catch {
-            print("❌ Failed to fetch Pokemon details:", error.localizedDescription)
-            return nil
-        }
-    }
-
-    // MARK: - fetch volution chain data
-    func fetchEvolutionChainData(pokemonID: Int) async -> Data? {
-        guard let speciesURL = AppURL.shared.pokemonSpeciesURL(pokemonID: pokemonID) else {
-            print("❌ Invalid species URL")
-            return nil
-        }
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
 
         do {
-            let (speciesData, _) = try await URLSession.shared.data(from: speciesURL)
+            let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard
-                let json = try JSONSerialization.jsonObject(with: speciesData) as? [String: Any],
-                let evoInfo = json["evolution_chain"] as? [String: Any],
-                let evoURLString = evoInfo["url"] as? String,
-                let evoURL = URL(string: evoURLString)
-            else {
-                print("❌ Could not parse evolution_chain URL from species data")
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("❌ No HTTP response")
                 return nil
             }
 
-            let (evoData, _) = try await URLSession.shared.data(from: evoURL)
-            return evoData
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print("❌ HTTP Status Code: \(httpResponse.statusCode)")
+                return nil
+            }
 
+            guard httpResponse.mimeType == "application/json" else {
+                let raw = String(data: data, encoding: .utf8) ?? "Unreadable response"
+                print("❌ Unexpected MIME type: \(httpResponse.mimeType ?? "nil")")
+                print("❌ Raw response: \(raw)")
+                return nil
+            }
+
+            return data
         } catch {
-            print("❌ Error fetching evolution chain:", error.localizedDescription)
+            print("❌ Network error: \(error.localizedDescription)")
             return nil
         }
     }

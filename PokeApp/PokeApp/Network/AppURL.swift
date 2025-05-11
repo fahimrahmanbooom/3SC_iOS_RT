@@ -31,8 +31,8 @@ final class AppURL {
     }
     
     // species URL
-    func pokemonSpeciesURL(pokemonID: Int) -> URL? {
-        return URL(string: "\(baseURL)pokemon-species/\(pokemonID)/")
+    func pokemonSpeciesURL(pokemonID: Int) -> String? {
+        return "\(baseURL)pokemon-species/\(pokemonID)/"
     }
     
     // evolution chain URL

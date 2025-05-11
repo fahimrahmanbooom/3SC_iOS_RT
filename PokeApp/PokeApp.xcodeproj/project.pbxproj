@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FF0BF25D2DD1007600106D7A /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF0BF25C2DD1007600106D7A /* Launch Screen.storyboard */; };
-		FF8C195A2DCFF93B005B5F98 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FF8C19592DCFF93B005B5F98 /* CachedAsyncImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +70,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF8C195A2DCFF93B005B5F98 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +131,6 @@
 			);
 			name = PokeApp;
 			packageProductDependencies = (
-				FF8C19592DCFF93B005B5F98 /* CachedAsyncImage */,
 			);
 			productName = PokeApp;
 			productReference = FF9AF46E2DCEB56A008AFA64 /* PokeApp.app */;
@@ -218,7 +215,6 @@
 			mainGroup = FF9AF4652DCEB56A008AFA64;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				FF8C19582DCFF93B005B5F98 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FF9AF46F2DCEB56A008AFA64 /* Products */;
@@ -625,25 +621,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		FF8C19582DCFF93B005B5F98 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bullinnyc/CachedAsyncImage";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.6.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		FF8C19592DCFF93B005B5F98 /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FF8C19582DCFF93B005B5F98 /* XCRemoteSwiftPackageReference "CachedAsyncImage" */;
-			productName = CachedAsyncImage;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FF9AF4662DCEB56A008AFA64 /* Project object */;
 }

@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
+// pokemon list view
 struct PokemonListView: View {
     
     @StateObject private var viewModel = PokemonListViewModel()
@@ -21,6 +21,7 @@ struct PokemonListView: View {
                     
                     let pokemon = viewModel.filteredPokemons[index]
                     let pokemonID = PokemonHelper.extractPokemonID(from: pokemon["url"].string ?? "")
+                    let name = pokemon.name.string?.capitalized ?? "Unknown"
 
                     NavigationLink(destination: PokemonDetailView(detailURL: pokemon.url.string ?? "")) {
                         HStack(spacing: 16) {
@@ -29,30 +30,41 @@ struct PokemonListView: View {
                                     .fill(Color.gray.opacity(0.1))
                                     .frame(width: 45, height: 45)
 
-                                CachedAsyncImage(
-                                    url: AppURL.shared.pokemonImageURL(pokemonID: pokemonID ?? 0) ?? "",
-                                    placeholder: { _ in
-                                        ProgressView()
-                                            .frame(width: 45, height: 45)
-                                    },
-                                    image: {
-                                        Image(uiImage: $0)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 45, height: 45)
-                                            .padding(5)
-                                            .clipShape(Circle())
-                                            .transition(.opacity)
-                                    }
-                                )
+                                DiskCachingAsyncImage(url: URL(string: AppURL.shared.pokemonImageURL(pokemonID: pokemonID ?? 0) ?? "")) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 45, height: 45)
+                                        .padding(5)
+                                        .clipShape(Circle())
+                                        .transition(.opacity)
+                                } placeholder: {
+                                    ProgressView()
+                                        .frame(width: 45, height: 45)
+                                        .padding(5)
+                                        .background(Color.clear)
+                                        .clipShape(Circle())
+                                }
                             }
                             .overlay(Circle().stroke(Color.blue.opacity(0.6), lineWidth: 2))
-                            
-                            Text(pokemon.name.string?.capitalized ?? "Unknown")
+                            .accessibilityHidden(true)
+
+                            Text(name)
+                                .font(.body)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.7)
+                                .dynamicTypeSize(.small ... .xxLarge)
+                                .accessibilityLabel("\(name) Pokémon")
+
                             Spacer()
                         }
-                        .task {
-                            await self.viewModel.loadMoreIfNeeded(currentItem: pokemon)
+                        .accessibilityElement(children: .combine)
+                        .onAppear {
+                            if index == viewModel.filteredPokemons.count - 1 {
+                                Task {
+                                    await viewModel.loadMoreIfNeeded(currentItem: pokemon)
+                                }
+                            }
                         }
                     }
                 }
@@ -72,6 +84,8 @@ struct PokemonListView: View {
                     }) {
                         Image(systemName: overrideColorScheme == .dark ? "sun.max.fill" : "moon.fill")
                     }
+                    .accessibilityLabel("Toggle dark mode")
+                    .accessibilityHint("Switch between light and dark appearance")
                 }
             }
             .onAppear {

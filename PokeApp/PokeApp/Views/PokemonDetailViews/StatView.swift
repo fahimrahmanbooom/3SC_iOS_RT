@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// statistics view for the pokemons
 struct StatView: View {
     
     var label: String
@@ -28,17 +29,21 @@ struct StatView: View {
                 Text("\(value)")
                     .font(UIDevice.isiPhone ? .caption : .subheadline)
                     .bold()
+                    .dynamicTypeSize(.small ... .xxLarge)
             }
 
             Text(label.capitalized)
                 .font(UIDevice.isiPhone ? .caption2 : .subheadline)
+                .dynamicTypeSize(.small ... .large)
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label.capitalized): \(value)")
     }
 }
 
 #Preview {
-    StatView(label: "Stat", value: 50)
+    StatView(label: "Speed", value: 87)
 }

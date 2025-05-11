@@ -12,7 +12,7 @@ final class NetworkCall {
     static let shared = NetworkCall()
     private init() {}
 
-    // Fetch Pokémon list with pagination
+    // Fetch Pokemon list with pagination
     func fetchPokemonList(offset: Int, limit: Int) async -> Data? {
         guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?offset=\(offset)&limit=\(limit)") else {
             print("❌ Invalid Pokémon list URL")
@@ -49,7 +49,7 @@ final class NetworkCall {
         }
     }
 
-    // Generic fetch for Pokémon detail or species or evolution
+    // generic fetch for Pokemon detail or species or evolution
     func fetchPokemonDetails(from url: String) async -> Data? {
         guard let url = URL(string: url) else {
             print("❌ Invalid detail URL")

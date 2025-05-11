@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
+// pokemon details view
 struct PokemonDetailView: View {
- 
+    
     @StateObject private var viewModel = PokemonListViewModel()
     
     let detailURL: String
@@ -18,172 +18,141 @@ struct PokemonDetailView: View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 20) {
+                    
+                    // MARK: - Name and Experience
                     HStack {
                         Text(viewModel.selectedPokemonDetails.name.string?.capitalized ?? "")
                             .font(.title2)
                             .bold()
+                            .dynamicTypeSize(.small ... .xxLarge)
+                            .accessibilityLabel("Pokémon name: \(viewModel.selectedPokemonDetails.name.string?.capitalized ?? "Unknown")")
                         
                         Spacer()
                         
                         Image(systemName: "flame.fill")
                             .foregroundStyle(Color.orange)
+                            .accessibilityHidden(true)
                         
                         Text(viewModel.selectedPokemonDetails.base_experience.string ?? "")
                             .bold()
+                            .dynamicTypeSize(.small ... .xxLarge)
+                            .accessibilityLabel("Base experience: \(viewModel.selectedPokemonDetails.base_experience.string ?? "0")")
                     }
+                    .accessibilityElement(children: .combine)
                     
+                    // MARK: - Image
                     if let id = PokemonHelper.extractPokemonID(from: detailURL),
                        let url = AppURL.shared.pokemonImageURL(pokemonID: id) {
                         
-                        CachedAsyncImage(url: url, placeholder: { _ in
-                                ProgressView()
+                        AsyncImage(url: URL(string: url)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .background(Color.blue.opacity(0.2))
+                                .clipShape(Circle())
+                                .frame(width: UIDevice.isiPhone ? 120 : 150, height: UIDevice.isiPhone ? 120 : 150)
+                                .padding(15)
+                                .overlay(Circle().stroke(Color.blue.opacity(0.6), lineWidth: 1))
+                                .padding(.bottom, 30)
+                                .accessibilityLabel("Pokémon image")
+                        } placeholder: {
+                            ProgressView()
                                 .frame(width: UIDevice.isiPhone ? 150 : 200, height: UIDevice.isiPhone ? 150 : 200)
-                            },
-                            image: {
-                                Image(uiImage: $0)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .background(Color.blue.opacity(0.2))
-                                    .clipShape(Circle())
-                                    .frame(width: UIDevice.isiPhone ? 120 : 150, height: UIDevice.isiPhone ? 120 : 150)
-                                    .padding(15)
-                                    .overlay(Circle().stroke(Color.blue.opacity(0.6), lineWidth: 1))
-                                    .padding(.bottom, 30)
-                            }
-                        )
+                        }
                     }
-
-                    // MARK: - info
+                    
+                    // MARK: - Info Section
                     VStack(alignment: .leading, spacing: UIDevice.isiPhone ? 8 : 12) {
                         
-                        HStack {
-                            Image(systemName: "ruler")
-                                .frame(width: 5)
-                                .padding(.trailing, 5)
-                            
-                            Text("Height").bold()
-                            
-                            Spacer()
-                            
-                            Text(String(format: "%.1f m", Double(viewModel.selectedPokemonDetails.height.int ?? 0) / 10))
-                        }
+                        infoRow(icon: "ruler", label: "Height", value: String(format: "%.1f m", Double(viewModel.selectedPokemonDetails.height.int ?? 0) / 10))
                         
-                        HStack {
-                            Image(systemName: "scalemass")
-                                .frame(width: 5)
-                                .padding(.trailing, 5)
-                            
-                            Text("Weight").bold()
-                            
-                            Spacer()
-                            
-                            Text(String(format: "%.1f kg", Double(viewModel.selectedPokemonDetails.weight.int ?? 0) / 10))
-                        }
+                        infoRow(icon: "scalemass", label: "Weight", value: String(format: "%.1f kg", Double(viewModel.selectedPokemonDetails.weight.int ?? 0) / 10))
                         
-                        HStack {
-                            Image(systemName: "burst")
-                                .frame(width: 5)
-                                .padding(.trailing, 5)
-                            
-                            Text("Moves").bold()
-                            
-                            Spacer()
-                            
-                            Text(viewModel.selectedPokemonDetails.moves[0].move.name.string?.capitalized ?? "")
-                        }
+                        infoRow(icon: "burst", label: "Moves", value: viewModel.selectedPokemonDetails.moves[0].move.name.string?.capitalized ?? "Unknown")
                         
-                        HStack {
-                            Image(systemName: "bolt")
-                                .frame(width: 5)
-                                .padding(.trailing, 5)
-                            
-                            Text("Abilities").bold()
-                            
-                            Spacer()
-                            
-                            let abilitiesArray = viewModel.selectedPokemonDetails.abilities.array ?? []
-                            let abilityNames = abilitiesArray.compactMap { $0.ability.name.string?.capitalized }
-                            let abilitiesText = abilityNames.joined(separator: ", ")
-                            
-                            Text(abilitiesText)
-                        }
+                        let abilitiesArray = viewModel.selectedPokemonDetails.abilities.array ?? []
+                        let abilityNames = abilitiesArray.compactMap { $0.ability.name.string?.capitalized }
+                        let abilitiesText = abilityNames.joined(separator: ", ")
+                        
+                        infoRow(icon: "bolt", label: "Abilities", value: abilitiesText)
                     }
                     .padding()
                     .background(Color.blue.opacity(0.3))
                     .cornerRadius(12)
-
-                    // MARK: - type
+                    
+                    // MARK: - Types
                     HStack {
                         Image(systemName: "cube")
-                            .frame(width: 5)
-                            .padding(.trailing, 5)
+                            .accessibilityHidden(true)
                         
                         Text("Type")
                             .bold()
+                            .dynamicTypeSize(.small ... .xxLarge)
                         
                         Spacer()
                         
                         ForEach(0..<(self.viewModel.selectedPokemonDetails.types.array?.count ?? 0), id: \.self) { index in
+                            let typeName = self.viewModel.selectedPokemonDetails.types[index].type.name.string?.capitalized ?? ""
                             
-                            Text(self.viewModel.selectedPokemonDetails.types[index].type.name.string?.capitalized ?? "")
+                            Text(typeName)
                                 .font(.caption)
                                 .bold()
+                                .dynamicTypeSize(.small ... .large)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
                                 .background(self.viewModel.selectedPokemonDetails.types[index].type.name.string?.pokemonTypeColor ?? .gray)
                                 .foregroundStyle(Color.black)
                                 .cornerRadius(8)
+                                .accessibilityLabel("Type: \(typeName)")
                         }
                     }
                     .padding()
                     .background(Color.blue.opacity(0.3))
                     .cornerRadius(12)
-
-                    // MARK: - stats
+                    .accessibilityElement(children: .combine)
+                    
+                    // MARK: - Stats
                     VStack(alignment: .leading, spacing: 12) {
-                        
                         HStack {
                             Image(systemName: "chart.line.uptrend.xyaxis")
-                                .frame(width: 5)
-                                .padding(.trailing, 5)
-                                .padding([.leading, .bottom])
+                                .accessibilityHidden(true)
                             
                             Text("Stats")
                                 .font(.headline)
-                                .padding(.bottom)
+                                .dynamicTypeSize(.small ... .xxLarge)
                         }
-
+                        
                         let columns = [
                             GridItem(.flexible()),
                             GridItem(.flexible()),
                             GridItem(.flexible())
                         ]
-
+                        
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(0..<(viewModel.selectedPokemonDetails.stats.array?.count ?? 0), id: \.self) { index in
                                 let stat = viewModel.selectedPokemonDetails.stats[index]
                                 StatView(label: stat.stat.name.string ?? "", value: stat.base_stat.int ?? 0)
+                                    .accessibilityLabel("\(stat.stat.name.string?.capitalized ?? ""): \(stat.base_stat.int ?? 0)")
                             }
                         }
                     }
                     .padding(.vertical)
                     
-                    
-                    // MARK: - evolution
+                    // MARK: - Evolution
                     VStack(alignment: .leading, spacing: 12) {
-                        
                         HStack {
                             Image(systemName: "circle.grid.cross")
-                                .frame(width: 5)
-                                .padding(.trailing, 5)
+                                .accessibilityHidden(true)
                             
                             Text("Evolutions")
                                 .font(.headline)
+                                .dynamicTypeSize(.small ... .xxLarge)
                         }
                         
                         if viewModel.evolutionChain.isEmpty {
                             Text("No evolution data.")
                                 .foregroundColor(.gray)
+                                .accessibilityLabel("No evolution data available")
                         } else {
                             let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
                             
@@ -196,26 +165,30 @@ struct PokemonDetailView: View {
                                     
                                     HStack(spacing: 8) {
                                         VStack(spacing: 6) {
+                                            
                                             if let url = AppURL.shared.pokemonImageURL(pokemonID: id) {
-                                                CachedAsyncImage(url: url, placeholder: { _ in
-                                                    ProgressView()
-                                                }, image: { image in
-                                                    Image(uiImage: image)
+                                                AsyncImage(url: URL(string: url)) { image in
+                                                    image
                                                         .resizable()
                                                         .scaledToFit()
                                                         .frame(width: 60, height: 60)
                                                         .padding(5)
                                                         .clipShape(Circle())
                                                         .overlay(Circle().stroke(Color.orange.opacity(0.6), lineWidth: 1))
-                                                })
+                                                        .accessibilityLabel("Evolution: \(name.capitalized)")
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
                                             }
                                             
                                             Text(name.capitalized)
                                                 .font(.caption)
+                                                .dynamicTypeSize(.small ... .large)
                                             
                                             Image(systemName: "arrow.right")
                                                 .font(.caption2)
                                                 .foregroundColor(.white)
+                                                .accessibilityHidden(true)
                                         }
                                     }
                                     .frame(maxWidth: .infinity)
@@ -240,6 +213,26 @@ struct PokemonDetailView: View {
             }
         }
         .clipped()
+    }
+    
+    // MARK: - Helper for Info Rows
+    private func infoRow(icon: String, label: String, value: String) -> some View {
+        HStack {
+            Image(systemName: icon)
+                .frame(width: 5)
+                .padding(.trailing, 5)
+                .accessibilityHidden(true)
+            
+            Text(label).bold()
+                .dynamicTypeSize(.small ... .xxLarge)
+            
+            Spacer()
+            
+            Text(value)
+                .dynamicTypeSize(.small ... .xxLarge)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
 }
 

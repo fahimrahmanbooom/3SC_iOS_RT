@@ -48,14 +48,14 @@ final class PokemonListViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Load More Pokémons (Pagination)
+    // MARK: - Load More Pokemons (Pagination)
     func loadMore() async {
         guard !isLoading && canLoadMore else { return }
         isLoading = true
         defer { isLoading = false }
 
         guard let data = await NetworkCall.shared.fetchPokemonList(offset: offset, limit: limit) else {
-            errorMessage = "Failed to fetch Pokémon list."
+            errorMessage = "Failed to fetch Pokemon list."
             return
         }
 
@@ -92,14 +92,14 @@ final class PokemonListViewModel: ObservableObject {
     // MARK: - Load Pokémon Details
     func loadPokemonDetails(from url: String) async {
         guard let data = await NetworkCall.shared.fetchPokemonDetails(from: url) else {
-            errorMessage = "Failed to fetch Pokémon details."
+            errorMessage = "Failed to fetch Pokemon details."
             return
         }
 
         do {
             self.selectedPokemonDetails = try JSON(data: data)
         } catch {
-            print("❌ Failed to parse Pokémon details: \(error)")
+            print("❌ Failed to parse Pokemon details: \(error)")
             self.errorMessage = "Failed to load details."
         }
     }

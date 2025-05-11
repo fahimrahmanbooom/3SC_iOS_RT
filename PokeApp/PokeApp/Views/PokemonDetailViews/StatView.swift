@@ -20,7 +20,7 @@ struct StatView: View {
                     .frame(width: 55, height: 55)
 
                 Circle()
-                    .trim(from: 0, to: CGFloat(min(Float(value) / 100, 1)))
+                    .trim(from: 0, to: CGFloat(min(Float(value) / 255, 1)))
                     .stroke(label.pokemonStatColor, style: StrokeStyle(lineWidth: 6, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .frame(width: 55.5, height: 55.5)

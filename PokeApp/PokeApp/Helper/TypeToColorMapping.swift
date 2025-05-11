@@ -25,7 +25,7 @@ extension String {
             "rock": .indigo,
             "ghost": .purple,
             "dragon": .red,
-            "dark": .black,
+            "dark": .secondary,
             "steel": .gray,
             "fairy": .pink
         ]

@@ -7,7 +7,6 @@
 
 import Foundation
 
-@MainActor
 final class NetworkCall {
     static let shared = NetworkCall()
     private init() {}

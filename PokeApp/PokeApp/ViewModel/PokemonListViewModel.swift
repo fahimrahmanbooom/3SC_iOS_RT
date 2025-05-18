@@ -104,7 +104,6 @@ final class PokemonListViewModel: ObservableObject {
         }
     }
 
-    @MainActor
     func loadEvolutionChain(for pokemonID: Int) async {
         guard let speciesURL = AppURL.shared.pokemonSpeciesURL(pokemonID: pokemonID) else {
             print("❌ Invalid species URL")

@@ -26,7 +26,6 @@ final class DiskImageCache {
            let image = UIImage(data: data) {
             return image
         }
-
         return nil
     }
 

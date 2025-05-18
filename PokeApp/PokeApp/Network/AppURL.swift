@@ -14,6 +14,7 @@ final class AppURL {
 
     // base URL
     private let baseURL = "https://pokeapi.co/api/v2/"
+    private let baseImageURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"
 
     // pokemon list with pagination
     func pokemonListURL(offset: Int = 0, limit: Int = 20) -> URL? {
@@ -27,7 +28,7 @@ final class AppURL {
     
     // pokemon image URL
     func pokemonImageURL(pokemonID: Int) -> String? {
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(pokemonID).png"
+        return "\(baseImageURL)\(pokemonID).png"
     }
     
     // species URL
